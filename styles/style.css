@@ -1,17 +1,32 @@
 /* === GLOBAL STYLE === */
 body {
   font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; */
   background-color: #369d66;
   color: #1f2937;
   margin: 0;
   padding: 32px;
   line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
 }
+
+/* body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f3f4f6;
+  color: #374151;
+  margin: 0;
+  padding: 20px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+} */
 
 /* === TITLES === */
 h1 {
-  font-size: 1.85rem;
-  font-weight: 800;
+  font-size: 1.25rem; /* Jauh lebih kecil & rapi */
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.5rem;
   text-align: center;
   margin-bottom: 20px;
   color: #369d66;
@@ -31,19 +46,86 @@ h2 {
 
 /* === MAIN CONTAINER === */
 .container {
-  max-width: 1080px;
-  width: 80%;
-  margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 28px;
+  gap: 20px;
+  padding: 20px;
+}
+
+
+.tab-navigation button {
+  pointer-events: auto !important;
+  cursor: pointer;
+  z-index: 1001; /* Di atas segalanya */
+}
+/* #scannerCard, #dataCard {
+  display: block !important; 
+} */
+
+/* RESPONSIVE: Tampilan Mobile (HP) */
+@media (max-width: 768px) {
+  .container {
+    display: block; /* Matikan grid */
+    padding: 10px;
+  }
+
+ 
+  .tab-navigation {
+    display: flex;
+    justify-content: space-around;
+    background: #fff;
+    padding: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 2px solid #ddd;
+    z-index: 1001;
+  }
+
+  .tab-btn {
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    font-weight: bold;
+    color: #666;
+  }
+
+  .tab-btn.active {
+    color: #007bff;
+    border-bottom: 3px solid #007bff;
+  }
+
+  .card {
+    display: none !important; 
+  }
+
+  /* Tampilkan hanya yang memiliki class .active */
+  .card.active {
+    display: block !important;
+    margin-top: 15px;
+  }
+}
+
+@media (min-width: 769px) {
+  .tab-navigation {
+    display: none; /* Navigasi tidak diperlukan di PC karena Side-by-Side */
+  }
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .card {
+    display: block !important; /* Di PC jangan disembunyikan */
+  }
 }
 
 /* === CARD STYLE (ELEGANT) === */
 .card {
   background: #ffffff;
   border-radius: 16px;
-  padding: 26px;
+  padding: 20px;
   border: 1px solid #cfe9dc;
   box-shadow:
     0 3px 8px rgba(0,0,0,0.06),

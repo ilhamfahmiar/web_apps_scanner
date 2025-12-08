@@ -9,6 +9,10 @@ export const elements = {
   namaBuyer: document.getElementById("namaBuyer") as HTMLInputElement,
   lokasi: document.getElementById("lokasi") as HTMLTextAreaElement,
   historyList: document.getElementById("historyList") as HTMLDivElement,
+  tabScanner: document.getElementById('tabScanner') as HTMLButtonElement,
+  tabData: document.getElementById('tabData') as HTMLButtonElement,
+  scannerCard: document.getElementById('scannerCard') as HTMLDivElement,
+  dataCard: document.getElementById('dataCard') as HTMLDivElement
 };
 
 let currentAntrian: number = parseInt(
@@ -22,6 +26,7 @@ export function generateAntrian(): number {
 }
 
 export function fillForm(data: any) {
+  console.log(data)
   elements.nomorAntrian.value = generateAntrian().toString();
   elements.noTransaksi.value = data.noTransaksi || data.namaSeller || "";
   elements.namaSupplier.value = data.namaSupplier || data.kodeUnik || "";
@@ -29,6 +34,7 @@ export function fillForm(data: any) {
   elements.qtyPenawaran.value = data.qtyPenawaran || data.jumlahMuatan || "";
   elements.namaBuyer.value = data.namaBuyer || data.asalDaerah || "";
   elements.lokasi.value = data.lokasi || data.alamatPengirim || "";
+  toData();
 }
 
 export function getFormData(): ScanData {
@@ -42,4 +48,31 @@ export function getFormData(): ScanData {
     lokasi: elements.lokasi.value,
     waktu: new Date().toISOString(),
   };
+}
+
+function toData(){
+  const { tabScanner, tabData, scannerCard, dataCard } = elements;
+  tabScanner.classList.remove('active');
+  tabData.classList.add('active');
+  scannerCard.classList.remove('active');
+  dataCard.classList.add('active'); // Card hasil scan muncul
+}
+export function initTabs() {
+  const { tabScanner, tabData, scannerCard, dataCard } = elements;
+  tabData.addEventListener('click', () => {
+    // Navigasi Tab
+    tabScanner.classList.remove('active');
+    tabData.classList.add('active');
+
+    // Tampilan Kartu
+    scannerCard.classList.remove('active');
+    dataCard.classList.add('active'); // Card hasil scan muncul
+  });
+
+  tabScanner.addEventListener('click', () => {
+    tabScanner.classList.add('active');
+    tabData.classList.remove('active');
+    scannerCard.classList.add('active');
+    dataCard.classList.remove('active');
+  });
 }

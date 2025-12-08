@@ -1,0 +1,29 @@
+┣ 📂public
+┃ ┗ 📜qrcode-generator.html
+┣ 📂src
+┃ ┣ 📂assets
+┃ ┃ ┗ 📜logo-apk.svg
+┃ ┣ 📂scanner
+┃ ┃ ┗ 📜qrScanner.ts
+┃ ┣ 📂types
+┃ ┃ ┗ 📜ScanData.ts
+┃ ┣ 📂ui
+┃ ┃ ┗ 📜form.ts
+┃ ┣ 📂utils
+┃ ┃ ┣ 📜csv.ts
+┃ ┃ ┗ 📜storage.ts
+┃ ┣ 📜.DS_Store
+┃ ┗ 📜main.ts
+┣ 📂styles
+┃ ┗ 📜style.css
+┣ 📜.DS_Store
+┣ 📜.env
+┣ 📜.env.example
+┣ 📜.gitignore
+┣ 📜catatan.txt
+┣ 📜index.html
+┣ 📜package.json
+┣ 📜struktur.txt
+┣ 📜tsconfig copy.json
+┣ 📜tsconfig.json
+┗ 📜vite.config.ts

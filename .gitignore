@@ -1,0 +1,27 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Environment variables (PENTING: JANGAN DIHAPUS)
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# Editor folders and OS files
+.vscode/
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

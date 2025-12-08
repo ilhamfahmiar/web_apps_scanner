@@ -1,0 +1,13 @@
+Untuk menghapus .env di local yang terupload ke github karena memiliki token api banckend.
+
+git rm --cached .env
+git add .gitignore
+git commit -m "chore: stop tracking .env file"
+
+Cara Menggunakannya
+Simpan: Simpan file tersebut dengan nama .env.example di root folder.
+Commit: Masukkan file ini ke dalam repositori Git (jangan masukkan ke .gitignore).
+Setup Baru: Saat Anda (atau rekan kerja) menarik kode dari Git di komputer baru:
+Copy file tersebut: cp .env.example .env (di terminal).
+Buka file .env yang baru dibuat.
+Isi nilai aslinya (misal: VITE_APP_TOKEN=ABC123XYZ).

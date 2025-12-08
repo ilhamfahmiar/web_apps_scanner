@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>QR Scanner & Antrian + CSV</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+  <div class="tab-navigation">
+    <button id="tabScanner" class="tab-btn active">📷 Scanner</button>
+    <button id="tabData" class="tab-btn">📝 Hasil Scan</button>
+  </div>
+
+  <div class="container">
+    <!-- KIRI: Scanner -->
+    <div id="scannerCard" class="card active">
+      <h1>SCANNER ANTRIAN MASUK BARANG</h1>
+      <div id="reader"></div>
+      <p class="small">Arahkan Kode QR ke Kamera untuk dilakukan scan.</p>
+    </div>
+
+    <div id="dataCard" class="card">
+      <div class="form-wrapper">
+          <h2>Data Hasil Scan</h2>
+          <label>Nomor Antrian</label>
+          <input id="nomorAntrian" readonly>
+
+          <label>No Transaksi</label>
+          <input id="noTransaksi" readonly>
+
+          <label>Nama Supplier</label>
+          <input id="namaSupplier" readonly>
+
+          <label>ID Supplier</label>
+          <input id="idSupplier" readonly>
+
+          <label>Qty Penawaran</label>
+          <input id="qtyPenawaran" readonly>
+
+          <label>Nama Buyer</label>
+          <input id="namaBuyer" readonly>
+
+          <label>Lokasi</label>
+          <textarea id="lokasi" readonly></textarea>
+          <div class="button-group central">
+            <button id="saveBtn" class="btn">💾 Simpan</button>
+            <button id="printBtn" class="btn secondary">🖨️ Cetak</button>
+          </div>
+      </div>
+
+      <hr class="separator">
+
+      <div class="history-section">
+        <h3>🕒 Riwayat Pemindaian</h3>
+        <div id="historyList" class="small"></div>
+        
+        <div class="button-group central">
+          <button id="clearHistoryBtn" class="btn danger">🗑️ Hapus Semua</button>
+          <button id="exportBtn" class="btn">📄 Export CSV</button>
+        </div>
+      </div>
+  </div>
+
+<footer class="footer-powered">
+    <div class="powered-wrapper">
+        <img src="/src/assets/logo-apk.svg" class="footer-logo" alt="Logo">
+        <span class="powered-text">Powered By Asia Prima Konjac</span>
+    </div>
+</footer>
+  <script src="/src/main.ts" type="module"></script>
+</body>
+</html>
+
+

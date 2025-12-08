@@ -1,7 +1,7 @@
 import { startScanner } from "./scanner/qrScanner";
 import { getHistory, clearHistory, saveHistory } from "./utils/storage";
 import { exportToCSV } from "./utils/csv";
-import { elements, getFormData, fillForm } from "./ui/form";
+import { elements, getFormData, fillForm, initTabs } from "./ui/form";
 
 // Load history on load
 function renderHistory() {
@@ -30,6 +30,25 @@ function renderHistory() {
   });
 }
 
+const bootstrap = () => {
+    
+    // Inisialisasi navigasi tab dahulu
+    initTabs();
+    renderHistory();
+    // Baru jalankan kamera scanner
+    try {
+        startScanner();
+    } catch (e) {
+        console.error("Scanner error:", e);
+    }
+};
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootstrap);
+} else {
+    bootstrap(); // Jika sudah siap, langsung jalankan
+}
+
 // Buttons
 (document.getElementById("saveBtn") as HTMLButtonElement).onclick = () => {
   saveHistory(getFormData());
@@ -53,5 +72,5 @@ function renderHistory() {
   };
 
 // INIT
-startScanner();
-renderHistory();
+// startScanner();
+// renderHistory();
