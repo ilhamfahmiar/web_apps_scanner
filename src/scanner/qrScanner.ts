@@ -1,7 +1,18 @@
-import { fillForm, getFormData } from "../ui/form";
+import { fillForm } from "../ui/form";
+import { saveScanAndLog } from './saveScanAndLog';
 import { saveHistory } from "../utils/storage";
-
+import { BackendPO, LogData, ValidationResult } from "../types/index";
 declare const Html5Qrcode: any;
+import { validateScanData } from "./validate";
+
+function setError(errorMessage:any){ 
+  const elements = {
+    crash: document.getElementById('crash') as HTMLDivElement,
+  };
+  document.getElementById("instructions")!.style.display = "none";
+  elements.crash.textContent = errorMessage || "";
+  document.getElementById("crash")!.style.display = "block";
+}
 
 export function startScanner() {
   const html5QrCode = new Html5Qrcode("reader");
@@ -11,37 +22,64 @@ export function startScanner() {
   let isProcessing = false;
 
   async function onScanSuccess(decodedText: string) {
-    // Jika sedang memproses data sebelumnya, abaikan frame ini
+    setTimeout(() => {
+        document.getElementById("instructions")!.style.display = "block";
+        document.getElementById("crash")!.style.display = "none";
+    }, 5000); 
     if (isProcessing) return;
-
-    try {
-      isProcessing = true; // Kunci proses
-      
-      const data = JSON.parse(decodedText);
-      fillForm(data);
-      saveHistory(getFormData());
-      
-      alert("QR berhasil dipindai ✅");
-
-      // Opsional: Matikan kamera setelah sukses agar tidak scan ulang otomatis
-      await html5QrCode.stop(); 
-      isProcessing = false;
-
-    } catch (error) {
-      console.error("Bukan JSON:", decodedText);
-      // Jika ingin alert error muncul sekali saja, beri jeda sebelum isProcessing = false
-    } finally {
-      // Tunggu 3 detik sebelum mengizinkan scan berikutnya 
-      // agar user punya waktu menjauhkan QR dari kamera
-      setTimeout(() => {
-        isProcessing = false;
-      }, 3000);
-    }
+    
+    let originalData: any;
+    
+      try {
+          isProcessing = true;
+          originalData = JSON.parse(decodedText);
+          await html5QrCode.stop(); 
+          console.log("Kamera dihentikan. Melakukan validasi...",originalData,);
+          const validatedData = await validateScanData(originalData); 
+          if(validatedData.qrcode_crash=="crash"){
+            setError(validatedData.message);
+            isProcessing = false;
+            await startScanning();
+            return;
+          }
+          // alert("Validasi selesai. Menyimpan data scan...");
+          try {
+            const saved = await saveScanAndLog(validatedData.data, "scannedBy");
+            console.log("Nomor Antrian dari API:", validatedData.data, saved);
+            if(!saved.success){
+              console.log("Penyimpanan scan/log gagal:", saved.message);
+              setError(saved.message);
+              isProcessing = false;
+              return;
+            }
+            const logDataSave: LogData={
+              timestamp: new Date().toISOString(),
+              message: validatedData.message || "",
+              status: validatedData.data.status === "PO valid" ? "PO valid" : "PO tidak valid",
+              scanData: saved.data,
+              pdfUrl: ""
+            }
+            fillForm(logDataSave);
+            saveHistory(logDataSave);
+          } catch (err) {
+            console.log("Gagal menyimpan ke API lokal:", err);
+          }
+      } catch (error) {
+          const errorMessage = error instanceof Error 
+              ? error.message 
+              : "Terjadi kesalahan yang tidak diketahui.";
+          isProcessing = false; 
+      } finally {
+          setTimeout(() => {
+              isProcessing = false;
+          }, 3000); 
+      }
   }
 
   const startScanning = async () => {
     try {
-      const config = { fps: 10, qrbox: 250 };
+      const config = { fps: 10, qrbox: { width: 300, height: 300 }, 
+  aspectRatio: 1.0 };
       if (isMobile) {
         await html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess);
       } else {
@@ -59,3 +97,4 @@ export function startScanner() {
 
   startScanning();
 }
+

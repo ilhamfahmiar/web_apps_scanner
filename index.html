@@ -4,28 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>QR Scanner & Antrian + CSV</title>
-  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script src="/src/assets/lucide.min.js"></script>
+  <script src="/src/assets/html5-qrcode.min.js"></script>
   <link rel="stylesheet" href="../styles/style.css">
 </head>
 <body>
   <div class="tab-navigation">
-    <button id="tabScanner" class="tab-btn active">📷 Scanner</button>
-    <button id="tabData" class="tab-btn">📝 Hasil Scan</button>
+    <button id="tabScanner" class="tab-btn active"><i data-lucide="scan-line"></i> Scanner</button>
+    <button id="tabData" class="tab-btn"><i data-lucide="clipboard-check"></i> Hasil Scan</button>
+    <button id="tabHistory" class="tab-btn"><i data-lucide="history" class="icon-accent"></i> Riwayat Scan</button>
   </div>
 
   <div class="container">
     <!-- KIRI: Scanner -->
     <div id="scannerCard" class="card active">
       <h1>SCANNER ANTRIAN MASUK BARANG</h1>
+      <p id="instructions" class="small active">Arahkan Kode QR ke Kamera untuk dilakukan scan.</p>
+      <p id="crash" class="small " style="color:red;display: none;">QR Code tidak memiliki No PO</p>
       <div id="reader"></div>
-      <p class="small">Arahkan Kode QR ke Kamera untuk dilakukan scan.</p>
     </div>
-
     <div id="dataCard" class="card">
       <div class="form-wrapper">
-          <h2>Data Hasil Scan</h2>
-          <label>Nomor Antrian</label>
-          <input id="nomorAntrian" readonly>
+        <div id="dataCardInvalid" class="card" style="display:none; border: 2px solid red; background:#ffe6e6;">
+          <div class="">
+            <h3 style="color:red;">PO Tidak Valid</h3>
+            <p>Silahkan hubungi admin untuk validasi lebih lanjut.</p>
+          </div>
+        </div>
+          <!-- <h2>Data Hasil Scan</h2> -->
+           <div id="nomorAntrianDiv">
+              <label>Nomor Antrian</label>
+              <input id="nomorAntrian" readonly>
+           </div>
+          
 
           <label>No Transaksi</label>
           <input id="noTransaksi" readonly>
@@ -35,33 +46,25 @@
 
           <label>ID Supplier</label>
           <input id="idSupplier" readonly>
-
-          <label>Qty Penawaran</label>
-          <input id="qtyPenawaran" readonly>
-
-          <label>Nama Buyer</label>
-          <input id="namaBuyer" readonly>
-
-          <label>Lokasi</label>
-          <textarea id="lokasi" readonly></textarea>
-          <div class="button-group central">
-            <button id="saveBtn" class="btn">💾 Simpan</button>
-            <button id="printBtn" class="btn secondary">🖨️ Cetak</button>
+          
+          <div id="printBtnDiv" class="button-group central">
+            <div class=" central">
+                <button id="printBtn" class="btn secondary" style="background-color: #1b50e0;"><i data-lucide="printer"></i> Cetak Unduh</button>
+                
+            </div>
+            <div id="downloadLinkArea" class="" ></div>
           </div>
       </div>
-
-      <hr class="separator">
-
-      <div class="history-section">
-        <h3>🕒 Riwayat Pemindaian</h3>
-        <div id="historyList" class="small"></div>
-        
-        <div class="button-group central">
-          <button id="clearHistoryBtn" class="btn danger">🗑️ Hapus Semua</button>
-          <button id="exportBtn" class="btn">📄 Export CSV</button>
-        </div>
-      </div>
+      
+    </div>
+    <div id="historyCard" class="card">
+      <div id="historyList" class="small"></div>
+      <div class="button-group central">
+      <button id="clearHistoryBtn" class="btn danger"><i data-lucide="trash-2"></i> Hapus</button>
+      <button id="exportBtn" class="btn"><i data-lucide="file-spreadsheet"></i> Export CSV</button>
+    </div>
   </div>
+  
 
 <footer class="footer-powered">
     <div class="powered-wrapper">
@@ -69,7 +72,11 @@
         <span class="powered-text">Powered By Asia Prima Konjac</span>
     </div>
 </footer>
+<div id="printArea"></div>
   <script src="/src/main.ts" type="module"></script>
+  <script>
+    lucide.createIcons(); // Ini akan merender semua icon
+  </script>
 </body>
 </html>
 

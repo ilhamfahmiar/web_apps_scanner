@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>QR Code Generator</title>
+  <title>QR Code Generator dengan Logo</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <link rel="stylesheet" href="./styles/style.css"> <style>
+  <link rel="stylesheet" href="./styles/style.css"> 
+  <style>
     body {
       font-family: Arial, sans-serif;
       display: flex;
@@ -59,16 +60,47 @@
     .generator-container button:hover {
       background-color: #218838;
     }
-    #qrcodeCanvas {
+
+    /* === START: Tambahan untuk Logo QR Code === */
+
+    #qrcode-wrapper {
+      position: relative; /* Penampung utama harus RELATIVE */
       margin-top: 30px;
+      display: inline-block;
+    }
+
+    #qrcodeCanvas {
+      /* Tidak perlu border atau padding di sini, karena sudah ada wrapper */
+      display: inline-block;
       border: 1px solid #eee;
       padding: 10px;
       border-radius: 5px;
-      display: inline-block; /* Agar border pas dengan QR */
     }
+
+    #logo-overlay {
+      position: absolute; /* Logo ABSOLUTE di tengah wrapper */
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); /* Menengahkan logo secara tepat */
+      width: 60px; /* Ukuran logo, sekitar 20-30% dari ukuran QR */
+      height: 60px;
+      border-radius: 8px; /* Sudut sedikit membulat */
+      background-color: white; /* Memberi latar belakang putih agar logo menonjol */
+      padding: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Sedikit bayangan */
+      overflow: hidden;
+    }
+
+    #logo-overlay img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    /* === END: Tambahan untuk Logo QR Code === */
+
     .qr-placeholder {
         margin-top: 30px;
-        width: 256px; /* Sesuai ukuran QR */
+        width: 256px; 
         height: 256px;
         border: 1px dashed #ccc;
         border-radius: 5px;
@@ -79,7 +111,7 @@
         font-style: italic;
     }
     .qr-placeholder p {
-        margin: 0;
+      margin: 0;
     }
   </style>
 </head>
@@ -90,8 +122,13 @@
     <input type="text" id="transactionId" placeholder="Contoh: INV001-2023-12-31">
     <button id="generateQrBtn">Buat QR Code</button>
     
-    <div id="qrcodeCanvas">
+    <div id="qrcode-wrapper">
+      <div id="qrcodeCanvas">
         <div class="qr-placeholder"><p>QR Code akan muncul di sini</p></div>
+      </div>
+      <div id="logo-overlay" style="display: none;">
+        <img src="src/assets/logo-apk.svg" alt="Logo PT ASIA PRIMA KONJAC">
+      </div>
     </div>
   </div>
 
@@ -99,8 +136,8 @@
     const transactionIdInput = document.getElementById('transactionId');
     const generateQrBtn = document.getElementById('generateQrBtn');
     const qrcodeCanvas = document.getElementById('qrcodeCanvas');
+    const logoOverlay = document.getElementById('logo-overlay');
 
-    // Variabel untuk menyimpan instance QR agar bisa di-clear
     let qrInstance = null;
 
     function generateQrCode() {
@@ -108,33 +145,28 @@
 
     if (transactionId) {
         qrcodeCanvas.innerHTML = ''; 
+        logoOverlay.style.display = 'block'; // Tampilkan logo
 
-        // BUAT OBJEK JSON
-        // Sesuaikan properti ini dengan kebutuhan scanner Anda
         const dataJson = {
-        noTransaksi: transactionId,
-        nomorAntrian: "A-" + Math.floor(Math.random() * 100), // Contoh dummy
-        namaSupplier: "Supplier Contoh",
-        idSupplier: "SUP-001",
-        qtyPenawaran: 10,
-        namaBuyer: "Buyer Contoh",
-        lokasi: "Gudang Utama"
+        kode: transactionId,
         };
 
-        // Ubah Objek ke String JSON
         const jsonString = JSON.stringify(dataJson);
 
         // Render ke QR Code
         new QRCode(qrcodeCanvas, {
-        text: jsonString, // QR berisi teks JSON
+        text: jsonString, 
         width: 256,
         height: 256,
-        correctLevel : QRCode.CorrectLevel.M // Level M cukup aman untuk data JSON
+        // Penting: CorrectLevel HARUS H (High) atau Q (Quartile)
+        // Level H (30%) paling cocok untuk logo besar, Level M mungkin tidak cukup
+        correctLevel : QRCode.CorrectLevel.H 
         });
         
         console.log('QR JSON generated:', jsonString);
     } else {
         qrcodeCanvas.innerHTML = '<div class="qr-placeholder"><p>Masukkan ID!</p></div>';
+        logoOverlay.style.display = 'none'; // Sembunyikan logo jika kosong
     }
     }
 

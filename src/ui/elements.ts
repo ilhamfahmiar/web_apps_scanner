@@ -1,0 +1,20 @@
+export const elements = {
+  nomorAntrian: document.getElementById("nomorAntrian") as HTMLInputElement,
+  noTransaksi: document.getElementById("noTransaksi") as HTMLInputElement,
+  namaSupplier: document.getElementById("namaSupplier") as HTMLInputElement,
+  idSupplier: document.getElementById("idSupplier") as HTMLInputElement,
+  historyList: document.getElementById("historyList") as HTMLDivElement,
+  tabScanner: document.getElementById('tabScanner') as HTMLButtonElement,
+  tabData: document.getElementById('tabData') as HTMLButtonElement,
+  tabHistory: document.getElementById('tabHistory') as HTMLButtonElement,
+  clearHistoryBtn: document.getElementById('clearHistoryBtn') as HTMLButtonElement,
+  exportBtn: document.getElementById('exportBtn') as HTMLButtonElement,
+  printBtn: document.getElementById('printBtn') as HTMLButtonElement,
+  scannerCard: document.getElementById('scannerCard') as HTMLDivElement,
+  dataCard: document.getElementById('dataCard') as HTMLDivElement,
+  historyCard: document.getElementById('historyCard') as HTMLDivElement,
+  invalidCard : document.getElementById('dataCardInvalid') as HTMLDivElement,
+  nomorAntrianDiv : document.getElementById('nomorAntrianDiv') as HTMLDivElement,
+  printBtnDiv : document.getElementById('printBtnDiv') as HTMLDivElement,
+  downloadLinkArea : document.getElementById('downloadLinkArea') as HTMLDivElement
+};
