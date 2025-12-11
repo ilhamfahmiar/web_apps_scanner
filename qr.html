@@ -5,14 +5,16 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>QR Code Generator dengan Logo</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <link rel="stylesheet" href="./styles/style.css"> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script> 
+  <link rel="stylesheet" href="../styles/style.css">
   <style>
+    html, body {
+  height: 100%;
+  margin: 0;
+}
     body {
       font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
       min-height: 100vh;
       background-color: #f4f7f6;
       color: #333;
@@ -21,7 +23,7 @@
     }
     .generator-container {
       background-color: #fff;
-      padding: 30px;
+      padding: 10px;
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       text-align: center;
@@ -31,7 +33,7 @@
     .generator-container h1 {
       color: #007bff;
       margin-bottom: 25px;
-      font-size: 1.8em;
+      font-size: 1.2em;
     }
     .generator-container label {
       display: block;
@@ -41,20 +43,20 @@
     }
     .generator-container input[type="text"] {
       width: calc(100% - 20px);
-      padding: 12px;
-      margin-bottom: 20px;
+      /* padding: 12px;
+      margin-bottom: 20px; */
       border: 1px solid #ddd;
       border-radius: 5px;
-      font-size: 1em;
+      font-size: 0.9em;
     }
     .generator-container button {
       background-color: #28a745;
       color: white;
-      padding: 12px 25px;
+      padding: 10px 10px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      font-size: 1em;
+      /* font-size: 1em; */
       transition: background-color 0.3s ease;
     }
     .generator-container button:hover {
@@ -65,7 +67,6 @@
 
     #qrcode-wrapper {
       position: relative; /* Penampung utama harus RELATIVE */
-      margin-top: 30px;
       display: inline-block;
     }
 
@@ -99,13 +100,12 @@
     /* === END: Tambahan untuk Logo QR Code === */
 
     .qr-placeholder {
-        margin-top: 30px;
+      padding-top: 10px;
         width: 256px; 
         height: 256px;
         border: 1px dashed #ccc;
         border-radius: 5px;
         display: flex;
-        align-items: center;
         justify-content: center;
         color: #888;
         font-style: italic;
@@ -118,59 +118,21 @@
 <body>
   <div class="generator-container">
     <h1>Generator QR Code Transaksi</h1>
-    <label for="transactionId">Masukkan Nomor Transaksi:</label>
-    <input type="text" id="transactionId" placeholder="Contoh: INV001-2023-12-31">
-    <button id="generateQrBtn">Buat QR Code</button>
-    
-    <div id="qrcode-wrapper">
-      <div id="qrcodeCanvas">
-        <div class="qr-placeholder"><p>QR Code akan muncul di sini</p></div>
-      </div>
-      <div id="logo-overlay" style="display: none;">
-        <img src="src/assets/logo-apk.svg" alt="Logo PT ASIA PRIMA KONJAC">
-      </div>
-    </div>
+  <label for="transactionId">Masukkan Nomor Transaksi:</label>
+  <input type="text" id="qrText" value="PM0225050467" placeholder="Contoh: INV001-2023-12-31">
+  <div class="button-group central">
+<button id="generateQrBtn" class="btn">Buat QR Code</button>
+  <button id="downloadQrBtn" class="btn">Unduh Gambar (PNG)</button>
   </div>
+  <div id="qrcode-wrapper">
+      <div id="qr" class="qr-placeholder"></div>
+      <!-- <div id="qr"></div> -->
+    </div>
+  
+  </div>
+  
 
-  <script>
-    const transactionIdInput = document.getElementById('transactionId');
-    const generateQrBtn = document.getElementById('generateQrBtn');
-    const qrcodeCanvas = document.getElementById('qrcodeCanvas');
-    const logoOverlay = document.getElementById('logo-overlay');
-
-    let qrInstance = null;
-
-    function generateQrCode() {
-    const transactionId = transactionIdInput.value.trim();
-
-    if (transactionId) {
-        qrcodeCanvas.innerHTML = ''; 
-        logoOverlay.style.display = 'block'; // Tampilkan logo
-
-        const dataJson = {
-        kode: transactionId,
-        };
-
-        const jsonString = JSON.stringify(dataJson);
-
-        // Render ke QR Code
-        new QRCode(qrcodeCanvas, {
-        text: jsonString, 
-        width: 256,
-        height: 256,
-        // Penting: CorrectLevel HARUS H (High) atau Q (Quartile)
-        // Level H (30%) paling cocok untuk logo besar, Level M mungkin tidak cukup
-        correctLevel : QRCode.CorrectLevel.H 
-        });
-        
-        console.log('QR JSON generated:', jsonString);
-    } else {
-        qrcodeCanvas.innerHTML = '<div class="qr-placeholder"><p>Masukkan ID!</p></div>';
-        logoOverlay.style.display = 'none'; // Sembunyikan logo jika kosong
-    }
-    }
-
-    generateQrBtn.addEventListener('click', generateQrCode);
-  </script>
+  <!-- WAJIB module -->
+  <script type="module" src="/src/qr/qr.ts"></script>
 </body>
 </html>

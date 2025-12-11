@@ -39,7 +39,7 @@ export function startScanner() {
           if(validatedData.qrcode_crash=="crash"){
             setError(validatedData.message);
             isProcessing = false;
-            await startScanning();
+            // await startScanning();
             return;
           }
           // alert("Validasi selesai. Menyimpan data scan...");

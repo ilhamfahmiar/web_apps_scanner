@@ -1,18 +1,11 @@
-const VALIDATION_API_URL =import.meta.env.VITE_API_BASE_URL;
-const BEARER_TOKEN = import.meta.env.VITE_API_BEARER_TOKEN;
 import { BackendPO } from "../types/index";
 export async function validateScanData(scanData: any): Promise<any> {
-    if (!BEARER_TOKEN) {
-        throw new Error("API Bearer Token tidak ditemukan di environment variables.");
-    }
+    
     try {
-        // alert("Mulai validasi data PO...");
-        const response = await fetch(VALIDATION_API_URL, {
+        
+        const response = await fetch('/erp/po', {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${BEARER_TOKEN}` 
-            }
+            headers: { 'Content-Type': 'application/json' },
         });
         // alert("response diterima dari server.");
         if (!response.ok) {

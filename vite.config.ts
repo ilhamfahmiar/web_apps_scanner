@@ -30,6 +30,13 @@ export default defineConfig({
         secure: false,
         // Rewrite tidak diperlukan jika Express juga menggunakan prefix /receipts
       },
+      '/erp': {
+        target: EXPRESS_BACKEND_URL, // Ganti dengan alamat backend Express Anda
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/erp/, ""),
+        // Rewrite tidak diperlukan jika Express juga menggunakan prefix /receipts
+      },
     },
   },
 });
